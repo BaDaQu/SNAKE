@@ -1,5 +1,35 @@
 # Gra Snake w C++ z biblioteką ncurses
-Projekt implementuje klasyczną grę Snake w języku C++, wykorzystując bibliotekę ncurses do obsługi interfejsu tekstowego w konsoli. Gra jest zbudowana w oparciu o prosty system okienkowy, który zarządza wyświetlaniem i interakcją z użytkownikiem. Główna logika gry, czyli ruch węża, zbieranie jabłek i system punktacji, jest zawarta w klasie CSnake.
-System okienkowy, zdefiniowany w winsys.h i winsys.cpp, dostarcza podstawowe klasy abstrakcyjne, takie jak CView (ogólny widok), CWindow (proste okno wypełnione znakiem) oraz CFramedWindow (okno z ramką). Klasa CInputLine pozwala na wprowadzanie tekstu, a CGroup i CDesktop zarządzają hierarchią i cyklem życia okien. Funkcje związane z bezpośrednią interakcją z terminalem (inicjalizacja, rysowanie, pobieranie znaków) są zgrupowane w screen.h i screen.cpp, stanowiąc warstwę abstrakcji nad ncurses.
-Logika gry CSnake obejmuje ruch węża w czterech kierunkach, kontrolowany klawiszami WSAD. Wąż rośnie po zjedzeniu jabłka, a prędkość jego poruszania się wzrasta wraz z kolejnymi poziomami. Gra posiada system punktacji, gdzie za każde jabłko gracz otrzymuje punkty, a osiągnięcie określonej liczby punktów skutkuje awansem na wyższy poziom. Zaimplementowano mechanizm pauzy (klawisz P) oraz restartu gry (klawisz R). Kolizja węża z samym sobą lub z granicami planszy (choć w tej wersji wąż przechodzi na drugą stronę) kończy grę, wyświetlając komunikat "GAME OVER". Pozycje jabłek są generowane losowo na planszy.
-Struktura CPoint i CRect (zdefiniowane w cpoint.h) służą do reprezentacji współrzędnych i prostokątnych obszarów na ekranie, ułatwiając zarządzanie geometrią obiektów. Plik main.cpp inicjuje pulpit (CDesktop) i dodaje do niego okno gry CSnake oraz przykładowe inne okna. Makefile automatyzuje proces kompilacji, tworząc pliki obiektowe w folderze obj i finalny plik wykonywalny winsys. Całość stanowi przykład implementacji prostej gry z wykorzystaniem obiektowego podejścia i biblioteki ncurses do interakcji z użytkownikiem w trybie tekstowym.
+
+## Opis Projektu
+
+Projekt implementuje klasyczną grę Snake w języku C++, wykorzystując bibliotekę `ncurses` do obsługi interfejsu tekstowego w konsoli. Gra jest zbudowana w oparciu o prosty, obiektowy system okienkowy, który zarządza wyświetlaniem elementów na ekranie oraz interakcją z użytkownikiem. Główna logika gry, obejmująca ruch węża, mechanikę zbierania jabłek, system punktacji oraz poziomy trudności, jest zaimplementowana w klasie `CSnake`.
+
+### System Okienkowy
+
+System okienkowy, którego definicje znajdują się w plikach `winsys.h` i implementacja w `winsys.cpp`, dostarcza zestaw podstawowych klas abstrakcyjnych:
+*   `CView`: Reprezentuje ogólny, abstrakcyjny widok na ekranie.
+*   `CWindow`: Proste okno, które może być wypełnione określonym znakiem.
+*   `CFramedWindow`: Rozszerzenie `CWindow`, dodające możliwość rysowania ramki wokół okna.
+*   `CInputLine`: Specjalny typ okna z ramką, umożliwiający użytkownikowi wprowadzanie tekstu.
+*   `CGroup` i `CDesktop`: Klasy te odpowiadają za zarządzanie hierarchią wielu widoków (okien) oraz głównym cyklem życia aplikacji i obsługą zdarzeń.
+
+Interakcja z biblioteką `ncurses` (inicjalizacja ekranu, rysowanie znaków, pobieranie danych wejściowych) jest zamknięta w modułach `screen.h` i `screen.cpp`, tworząc warstwę abstrakcji ułatwiającą pracę z terminalem.
+
+### Logika Gry (CSnake)
+
+Główna mechanika gry, zaimplementowana w klasie `CSnake` (`snake.h`, `snake.cpp`), zawiera następujące elementy:
+*   **Ruch węża:** Kontrolowany przez gracza za pomocą klawiszy WSAD, umożliwiający poruszanie się w czterech podstawowych kierunkach.
+*   **Zbieranie jabłek:** Wąż rośnie po zjedzeniu jabłka, które pojawia się losowo na planszy.
+*   **System punktacji i poziomów:** Gracz zdobywa punkty za każde zebrane jabłko. Osiągnięcie określonego progu punktowego prowadzi do awansu na kolejny poziom, co skutkuje zwiększeniem prędkości węża.
+*   **Pauza i Restart:** Gra oferuje możliwość wstrzymania rozgrywki (klawisz P) oraz jej zresetowania do stanu początkowego (klawisz R).
+*   **Warunki zakończenia gry:** Kolizja węża z własnym ogonem kończy grę, wyświetlając komunikat "GAME OVER". W tej implementacji wąż przechodzi na przeciwną stronę planszy po dotarciu do jej krawędzi.
+
+### Struktury Pomocnicze i Organizacja
+
+Do reprezentacji pozycji i obszarów na ekranie wykorzystywane są struktury `CPoint` (punkt o współrzędnych x, y) oraz `CRect` (prostokąt zdefiniowany przez lewy górny róg i rozmiar), zadeklarowane w pliku `cpoint.h`.
+
+Plik `main.cpp` pełni rolę punktu startowego aplikacji, gdzie inicjalizowany jest obiekt `CDesktop` (pulpit) i dodawane są do niego instancje okien, w tym główne okno gry `CSnake`.
+
+Proces budowania projektu jest zarządzany przez `Makefile`, który kompiluje poszczególne moduły, umieszcza pliki obiektowe w dedykowanym folderze `obj`, a następnie linkuje je w celu stworzenia finalnego pliku wykonywalnego o nazwie `winsys`.
+
+Całość projektu stanowi praktyczny przykład implementacji prostej gry konsolowej z wykorzystaniem podejścia obiektowego oraz biblioteki `ncurses` do tworzenia interaktywnego interfejsu użytkownika w trybie tekstowym.
